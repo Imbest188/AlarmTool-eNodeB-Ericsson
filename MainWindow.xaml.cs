@@ -37,14 +37,20 @@ namespace AlarmTool_eNodeB_Ericsson
             dGridCeased.ItemsSource = ftpall.ceasedAlarms;
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e) {
-           
-            //AlarmList.Add(new Alarm(DateTime.Now, Alarm.AlarmClass.critical, "321", "123", "123"));
+        private void dGrid_SourceUpdated(object sender, DataTransferEventArgs e) {
             dGrid.Items.Refresh();
         }
 
-        private void dGrid_SourceUpdated(object sender, DataTransferEventArgs e) {
-            dGrid.Items.Refresh();
+        private void Add_Button_Click(object sender, RoutedEventArgs e) {
+
+        }
+
+        private void Filter_Button_Click(object sender, RoutedEventArgs e) {
+
+        }
+
+        private void Settings_Button_Click(object sender, RoutedEventArgs e) {
+
         }
     }
 }
