@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Enodeb
 {
-    class AlarmsGetter
+    class AlarmsGetter : IEnumerable<Alarm>
     {
         public List<Alarm> alarms { get; private set; }
         public List<Alarm> ceasedAlarms { get; private set; }
@@ -93,6 +93,14 @@ namespace Enodeb
                 //enodes.Remove(enodes.Where(node => node.));
             }
             return true;
+        }
+
+        public IEnumerator<Alarm> GetEnumerator() {
+            return ((IEnumerable<Alarm>)alarms).GetEnumerator();
+        }
+
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() {
+            return ((System.Collections.IEnumerable)alarms).GetEnumerator();
         }
     }
     public class Alarm

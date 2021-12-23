@@ -64,14 +64,17 @@
                 </DataGrid>
             </TabItem>
         </TabControl>
-        <Button HorizontalAlignment="Left" Margin="185,5,0,0" VerticalAlignment="Top" Width="20" Click="Add_Button_Click" Height="20" RenderTransformOrigin="-9,-1" >
-            <Image Source="add_button.png"/>
+        <Button HorizontalAlignment="Left" Margin="190,5,0,0" VerticalAlignment="Top" Width="20" Click="Add_Button_Click" Height="20" RenderTransformOrigin="-9,-1" >
+            <Image Source="C:\Users\User\source\repos\AlarmTool eNodeB Ericsson\img\add_button.png"/>
         </Button>
-        <Button HorizontalAlignment="Left" Margin="210,5,0,0" VerticalAlignment="Top" Width="20" Click="Filter_Button_Click" Height="20" RenderTransformOrigin="-9,-1">
-            <Image Source="filter_button.png"/>
+        <Button HorizontalAlignment="Left" Margin="211,5,0,0" VerticalAlignment="Top" Width="20" Click="Filter_Button_Click" Height="20" RenderTransformOrigin="-9,-1">
+            <Image Source="C:\Users\User\source\repos\AlarmTool eNodeB Ericsson\img\filter_button.png"/>
         </Button>
-        <Button HorizontalAlignment="Left" Margin="235,5,0,0" VerticalAlignment="Top" Width="20" Click="Settings_Button_Click" Height="20" RenderTransformOrigin="-9,-1">
-            <Image Source="settings_button.png"/>
+        <Button HorizontalAlignment="Left" Margin="232,5,0,0" VerticalAlignment="Top" Width="20" Click="Settings_Button_Click" Height="20" RenderTransformOrigin="-9,-1">
+            <Image Source="C:\Users\User\source\repos\AlarmTool eNodeB Ericsson\img\settings_button.png"/>
+        </Button>
+        <Button HorizontalAlignment="Left" Margin="253,5,0,0" VerticalAlignment="Top" Width="20" Click="Refresh_Button_Click" Height="20" RenderTransformOrigin="-9,-1">
+            <Image Source="C:\Users\User\source\repos\AlarmTool eNodeB Ericsson\img\refresh_button.png"/>
         </Button>
     </Grid>
 </Window>
