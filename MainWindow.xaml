@@ -64,14 +64,14 @@
                 </DataGrid>
             </TabItem>
         </TabControl>
-        <Button HorizontalAlignment="Left" Margin="185,5,0,0" VerticalAlignment="Top" Width="20" Click="Add_Button_Click" Height="20" RenderTransformOrigin="-9,-1" IsDefault="True">
-            <Image Source="img/add_button.png"/>
+        <Button HorizontalAlignment="Left" Margin="185,5,0,0" VerticalAlignment="Top" Width="20" Click="Add_Button_Click" Height="20" RenderTransformOrigin="-9,-1" >
+            <Image Source="add_button.png"/>
         </Button>
-        <Button HorizontalAlignment="Left" Margin="210,5,0,0" VerticalAlignment="Top" Width="20" Click="Filter_Button_Click" Height="20" RenderTransformOrigin="-9,-1" IsDefault="True">
-            <Image Source="img/filter_button.png"/>
+        <Button HorizontalAlignment="Left" Margin="210,5,0,0" VerticalAlignment="Top" Width="20" Click="Filter_Button_Click" Height="20" RenderTransformOrigin="-9,-1">
+            <Image Source="filter_button.png"/>
         </Button>
-        <Button HorizontalAlignment="Left" Margin="235,5,0,0" VerticalAlignment="Top" Width="20" Click="Settings_Button_Click" Height="20" RenderTransformOrigin="-9,-1" IsDefault="True">
-            <Image Source="img/settings_button.png"/>
+        <Button HorizontalAlignment="Left" Margin="235,5,0,0" VerticalAlignment="Top" Width="20" Click="Settings_Button_Click" Height="20" RenderTransformOrigin="-9,-1">
+            <Image Source="settings_button.png"/>
         </Button>
     </Grid>
 </Window>
