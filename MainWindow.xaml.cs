@@ -42,6 +42,7 @@ namespace AlarmTool_eNodeB_Ericsson
 
         private void Filter_Button_Click(object sender, RoutedEventArgs e) {
             List<string> filterArray = new List<string> { "License Key File Fault", "Password File Fault" };
+            
             dGrid.ItemsSource = from node in nodes where !filterArray.Contains(node.AlarmName) select node;
             dGrid.Items.Refresh();
         }

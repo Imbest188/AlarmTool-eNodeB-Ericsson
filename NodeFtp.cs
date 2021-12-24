@@ -150,6 +150,17 @@ namespace Enodeb
 
             return $"{RaiseTime} {AlarmName}\n{AlarmText}";
         }
+
+        public override bool Equals(object obj) {
+            return (obj is Alarm alarm &&
+                   AlarmName == alarm.AlarmName)
+                   || (obj is string t_string &&
+                   AlarmName == t_string);
+        }
+
+        public override int GetHashCode() {
+            return 1628282889 + EqualityComparer<string>.Default.GetHashCode(AlarmName);
+        }
     }
     public class NodeFtp
     {
