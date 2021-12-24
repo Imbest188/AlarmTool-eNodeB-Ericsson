@@ -17,10 +17,9 @@ using Enodeb;
 
 
 namespace AlarmTool_eNodeB_Ericsson
-{   
+{
     public partial class MainWindow : Window
     {
-        List<Alarm> AlarmList;
         AlarmsGetter nodes = null;
         public MainWindow() {
             InitializeComponent();
@@ -42,6 +41,7 @@ namespace AlarmTool_eNodeB_Ericsson
 
         private void Filter_Button_Click(object sender, RoutedEventArgs e) {
             List<string> filterArray = new List<string> { "License Key File Fault", "Password File Fault" };
+            var win = new FilterWindow();
             
             dGrid.ItemsSource = from node in nodes where !filterArray.Contains(node.AlarmName) select node;
             dGrid.Items.Refresh();
