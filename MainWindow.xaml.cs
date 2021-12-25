@@ -34,6 +34,7 @@ namespace AlarmTool_eNodeB_Ericsson
         public MainWindow() {
             Environment.CurrentDirectory = System.AppDomain.CurrentDomain.BaseDirectory;
             InitializeComponent();
+            HideSubwindows();
             InitAlarmImaginary();
             RunSched();
         }
@@ -204,7 +205,16 @@ namespace AlarmTool_eNodeB_Ericsson
         }
 
         private void Rmv_Button_Click(object sender, RoutedEventArgs e) {
-
+            if (RmvBox.Visibility == Visibility.Hidden)
+            {
+                rmv_box.ItemsSource = nodes.enodes.Select(x => $"{x.Host} {x.Name}");
+                rmv_box.Items.Refresh();
+                RmvBox.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                RmvBox.Visibility = Visibility.Hidden;
+            }
         }
 
         private bool ShowIfFind(in string objectName, int alarmId, bool ceased = false) {
@@ -215,6 +225,8 @@ namespace AlarmTool_eNodeB_Ericsson
                 if (alarm.ObjectName == objectName && alarm.AlarmId == alarmId)
                 {
                     StringBuilder alarmImaginary = new StringBuilder();
+                    if (alarm.LogData == null)
+                        return false;
                     var csvParts = alarm.LogData.Split(';');
                     for (int i = 3; i < csvParts.Length; i++)
                     {
@@ -247,6 +259,24 @@ namespace AlarmTool_eNodeB_Ericsson
 
         private void dGridCeased_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e) {
             ShowAlarmData(dGridCeased);
+        }
+
+        private void rmv_close_Click(object sender, RoutedEventArgs e) {
+            RmvBox.Visibility = Visibility.Hidden;
+        }
+
+        private void delete_node_Click(object sender, RoutedEventArgs e) {
+            var answer = MessageBox.Show(
+                $"Удалить {rmv_box.SelectedValue} из списка просматриваемых объектов?",
+                "Подтверждение удаления", MessageBoxButton.OKCancel
+            );
+
+            if(answer == MessageBoxResult.OK)
+            {
+                var node = rmv_box.SelectedValue.ToString().Split(' ')[0];
+                nodes.RemoveEnode(node);
+                RefreshAlarms();
+            }
         }
     }
 }

@@ -105,11 +105,11 @@
         </GroupBox>
         <GroupBox x:Name="RmvBox" Height="115" Margin="232,135,258.6,170" VerticalAlignment="Center" Grid.ColumnSpan="2" Background="DarkGray" BorderBrush="Black">
             <StackPanel Height="128" Margin="0,0,0.2,0" VerticalAlignment="Top">
-                <Button x:Name="rmv_close" Width="auto" Height="21" Content="X" Margin="257,0,10.2,0" Click="add_close_Click"/>
+                <Button x:Name="rmv_close" Width="auto" Height="21" Content="X" Margin="257,0,10.2,0" Click="rmv_close_Click"/>
                 <Label Content="Выбери объект из списка:" Margin="10,0,10.2,0"/>
                 <ComboBox x:Name="rmv_box" Margin="10,0,10.2,0"/>
                 <Label/>
-                <Button x:Name="rmv_accept" Width="auto" Height="26" Content="Удалить" Margin="62,0,89.2,0" Click="add_close_Click"/>
+                <Button x:Name="rmv_accept" Width="auto" Height="26" Content="Удалить" Margin="62,0,89.2,0" Click="delete_node_Click"/>
             </StackPanel>
         </GroupBox>
     </Grid>

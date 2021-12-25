@@ -10,7 +10,7 @@ namespace Enodeb
     {
         public List<Alarm> alarms { get; private set; }
         public List<Alarm> ceasedAlarms { get; private set; }
-        private List<NodeFtp> enodes;
+        public List<NodeFtp> enodes { get; private set; }
 
         const string nodeFile = "nodes.txt";
 
@@ -76,8 +76,8 @@ namespace Enodeb
             if (File.Exists(nodeFile))
             {
                 var nodes = File.ReadAllLines(nodeFile);
-                nodes = (string[])nodes.Where(x => !x.StartsWith(host));
-                File.WriteAllLines(nodeFile, nodes);
+                var newNodes = nodes.Where(x => !x.StartsWith(host));
+                File.WriteAllLines(nodeFile, newNodes);
             }
         }
 
@@ -94,7 +94,7 @@ namespace Enodeb
             {
                 if(enodes[i].Host == host)
                 {
-                    enodes[i] = new NodeFtp(host, login, password);
+                    enodes[i] = new NodeFtp(host, login, password, name);
                     SaveNodeToFile(host, login, password, name);
                     return 1;
                 }
@@ -111,8 +111,8 @@ namespace Enodeb
                 {
                     if (enodes[i].Host == host)
                     {
-                        enodes.Remove(enodes[i]);
                         RemoveNodeFromFile(enodes[i].Host);
+                        enodes.Remove(enodes[i]);                     
                         return true;
                     }
                 }
