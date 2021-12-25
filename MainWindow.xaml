@@ -16,11 +16,13 @@
             <TabItem Header="Active Alarms">
                 <DataGrid x:Name="dGrid" Margin="0,0,0,0" HorizontalAlignment="Stretch" Height="auto" VerticalAlignment="Stretch" 
                           Width="auto" ColumnWidth="Auto" ItemsSource="{Binding AlarmList}" AutoGenerateColumns="False" 
-                          SourceUpdated="dGrid_SourceUpdated" FontFamily="Times New Roman" FontStretch="Expanded" FontWeight="DemiBold">
+                          SourceUpdated="dGrid_SourceUpdated" FontFamily="Times New Roman" FontStretch="Expanded" 
+                          FontWeight="DemiBold" MouseDoubleClick="dGrid_MouseDoubleClick" IsReadOnly="True">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Time" Binding="{Binding RaiseTime, StringFormat=dd.MM.yy HH:MM:ss}"/>
                         <DataGridTextColumn Header="Class" Binding="{Binding Class}"/>
                         <DataGridTextColumn Header="Object" Binding="{Binding ObjectName}"/>
+                        <DataGridTextColumn Header="Id" Binding="{Binding AlarmId}" />
                         <DataGridTextColumn Header="Alarm Name" Binding="{Binding AlarmName}"/>
                         <DataGridTextColumn Header="Alarm Text" Binding="{Binding AlarmText}" Width="*"/>
                     </DataGrid.Columns>
@@ -53,11 +55,13 @@
             <TabItem Header="Ceased Alarms">
                 <DataGrid x:Name="dGridCeased" Margin="0,0,0,0" HorizontalAlignment="Stretch" Height="auto" VerticalAlignment="Stretch" 
                           Width="auto" ColumnWidth="Auto" ItemsSource="{Binding AlarmList}" AutoGenerateColumns="False" 
-                          SourceUpdated="dGrid_SourceUpdated" FontFamily="Times New Roman" FontStretch="Expanded" FontWeight="DemiBold">
+                          SourceUpdated="dGrid_SourceUpdated" FontFamily="Times New Roman" FontStretch="Expanded" FontWeight="DemiBold" 
+                          MouseDoubleClick="dGridCeased_MouseDoubleClick" IsReadOnly="True">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Time" Binding="{Binding RaiseTime, StringFormat=dd.MM.yy HH:MM:ss}"/>
                         <DataGridTextColumn Header="Class" Binding="{Binding Class}"/>
                         <DataGridTextColumn Header="Object" Binding="{Binding ObjectName}"/>
+                        <DataGridTextColumn Header="Id" Binding="{Binding AlarmId}"/>
                         <DataGridTextColumn Header="Alarm Name" Binding="{Binding AlarmName}"/>
                         <DataGridTextColumn Header="Alarm Text" Binding="{Binding AlarmText}" Width="*"/>
                     </DataGrid.Columns>
@@ -67,10 +71,13 @@
         <Button HorizontalAlignment="Left" Margin="190,5,0,0" VerticalAlignment="Top" Width="20" Click="Add_Button_Click" Height="20" RenderTransformOrigin="-9,-1" >
             <Image Source="pack://application:,,,/add_button.png"/>
         </Button>
-        <Button HorizontalAlignment="Left" Margin="211,5,0,0" VerticalAlignment="Top" Width="20" Click="Filter_Button_Click" Height="20" RenderTransformOrigin="-9,-1">
+        <Button HorizontalAlignment="Left" Margin="211,5,0,0" VerticalAlignment="Top" Width="20" Click="Rmv_Button_Click" Height="20" RenderTransformOrigin="-9,-1" >
+            <Image Source="pack://application:,,,/rmv_button.png"/>
+        </Button>
+        <Button HorizontalAlignment="Left" Margin="232,5,0,0" VerticalAlignment="Top" Width="20" Click="Filter_Button_Click" Height="20" RenderTransformOrigin="-9,-1">
             <Image Source="pack://application:,,,/filter_button.png"/>
         </Button>
-        <Button HorizontalAlignment="Left" Margin="232,5,0,0" VerticalAlignment="Top" Width="20" Click="Refresh_Button_Click" Height="20" RenderTransformOrigin="-9,-1">
+        <Button HorizontalAlignment="Left" Margin="253,5,0,0" VerticalAlignment="Top" Width="20" Click="Refresh_Button_Click" Height="20" RenderTransformOrigin="-9,-1">
             <Image Source="pack://application:,,,/refresh_button.png"/>
         </Button>
 
@@ -95,9 +102,16 @@
                 <Label Content=" "/>
                 <Button x:Name="add_ok" Width="auto" Height="22" Content="Добавить" Margin="0,0,0.2,0" VerticalAlignment="Bottom" Click="add_ok_Click"/>
             </StackPanel>
-
         </GroupBox>
-
+        <GroupBox x:Name="RmvBox" Height="115" Margin="232,135,258.6,170" VerticalAlignment="Center" Grid.ColumnSpan="2" Background="DarkGray" BorderBrush="Black">
+            <StackPanel Height="128" Margin="0,0,0.2,0" VerticalAlignment="Top">
+                <Button x:Name="rmv_close" Width="auto" Height="21" Content="X" Margin="257,0,10.2,0" Click="add_close_Click"/>
+                <Label Content="Выбери объект из списка:" Margin="10,0,10.2,0"/>
+                <ComboBox x:Name="rmv_box" Margin="10,0,10.2,0"/>
+                <Label/>
+                <Button x:Name="rmv_accept" Width="auto" Height="26" Content="Удалить" Margin="62,0,89.2,0" Click="add_close_Click"/>
+            </StackPanel>
+        </GroupBox>
     </Grid>
 
 </Window>

@@ -118,9 +118,6 @@
     <Resource Include="add_button.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="settings_button.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="icon.ico" />
   </ItemGroup>
   <ItemGroup>
@@ -128,6 +125,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="refresh_button.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="rmv_button.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

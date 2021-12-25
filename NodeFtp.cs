@@ -72,7 +72,14 @@ namespace Enodeb
             Task.WhenAll();
         }
 
-
+        private void RemoveNodeFromFile(string host) {
+            if (File.Exists(nodeFile))
+            {
+                var nodes = File.ReadAllLines(nodeFile);
+                nodes = (string[])nodes.Where(x => !x.StartsWith(host));
+                File.WriteAllLines(nodeFile, nodes);
+            }
+        }
 
         private void SaveNodeToFile(in string host, in string login, in string password, in string name) {
             string nodeAuthData = $"{host};{login};{password};{name}\n";
@@ -97,14 +104,15 @@ namespace Enodeb
             return 0;
         }
 
-        public bool RemoveEnode(in string host = null, in string name = null) {
+        public bool RemoveEnode(in string host) {
             if (host != null)
             {
                 for (int i = 0; i < enodes.Count; i++)
                 {
-                    if (enodes[i].Host == host || enodes[i].Name == name)
+                    if (enodes[i].Host == host)
                     {
                         enodes.Remove(enodes[i]);
+                        RemoveNodeFromFile(enodes[i].Host);
                         return true;
                     }
                 }
@@ -137,11 +145,13 @@ namespace Enodeb
         public int AlarmId { get; private set; }
         public string AlarmName { get; private set; }
         public string AlarmText { get; private set; }
+        public string LogData { get; private set; }
 
         public Alarm(in DateTime raiseTime, in string description, in string objectName) {
             RaiseTime = raiseTime;
             ObjectName = objectName;
             ParseDescription(description);
+            LogData = description;
         }
         public Alarm(in DateTime raiseTime, AlarmClass aClass, in string alarmName, in string alarmText, in string objectName) {
             RaiseTime = raiseTime;

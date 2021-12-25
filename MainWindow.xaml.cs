@@ -33,25 +33,29 @@ namespace AlarmTool_eNodeB_Ericsson
         private List<string> filterArray = new List<string>();
         public MainWindow() {
             Environment.CurrentDirectory = System.AppDomain.CurrentDomain.BaseDirectory;
-            InitializeComponent();           
-            fGrid.Visibility = Visibility.Hidden;
-            Filter_ok_button.Visibility = Visibility.Hidden;
-            AddBox.Visibility = Visibility.Hidden;
+            InitializeComponent();
+            InitAlarmImaginary();
+            RunSched();
+        }
+
+        private void InitAlarmImaginary() {
             nodes = new AlarmsGetter();
             RefreshAlarms();
             filterWords.Clear();
-            foreach (var aName in nodes.Select(x => x.AlarmName).Distinct())
-            {
-                filterWords.Add(new AlarmState(aName, true));
-            }
+            filterWords.AddRange(from aName in nodes.Select(x => x.AlarmName).Distinct()
+                                 select new AlarmState(aName, true));
             TryToReadFilter();
             fGrid.ItemsSource = filterWords;
             fGrid.Items.Refresh();
             dGrid.ItemsSource = from node in nodes where !filterArray.Contains(node.AlarmName) select node;
             dGrid.Items.Refresh();
-            RunSched();
         }
-
+        private void HideSubwindows() {
+            fGrid.Visibility = Visibility.Hidden;
+            Filter_ok_button.Visibility = Visibility.Hidden;
+            AddBox.Visibility = Visibility.Hidden;
+            RmvBox.Visibility = Visibility.Hidden;
+        }
         private void RefreshAlarms() {
             nodes.GetAlarmsAsync();
 
@@ -108,11 +112,7 @@ namespace AlarmTool_eNodeB_Ericsson
         }
 
         private void Refresh_Button_Click(object sender, RoutedEventArgs e) {
-
-            //filter?
-
             RefreshAlarms();
-            
             dGrid.Items.Refresh();
         }
 
@@ -192,15 +192,61 @@ namespace AlarmTool_eNodeB_Ericsson
             {
                 if (nodes.AddEnode(add_host.Text, add_login.Text, add_pwd.Text, add_name.Text) == 1)
                 {
-                    MessageBox.Show("Найдено совпадение", $"Данные для {add_host.Text} обновлены");
+                    MessageBox.Show($"Данные для {add_host.Text} обновлены", "Найдено совпадение");
                 }
                 AddBox.Visibility = Visibility.Hidden;
                 RefreshAlarms();
             }
             else
             {
-                MessageBox.Show("Проверка", "Не все поля заполнены");
+                MessageBox.Show("Не все поля заполнены", "Проверка");
             }
+        }
+
+        private void Rmv_Button_Click(object sender, RoutedEventArgs e) {
+
+        }
+
+        private bool ShowIfFind(in string objectName, int alarmId, bool ceased = false) {
+            var source = ceased ? nodes.ceasedAlarms : nodes.alarms;
+
+            foreach (var alarm in source)
+            {
+                if (alarm.ObjectName == objectName && alarm.AlarmId == alarmId)
+                {
+                    StringBuilder alarmImaginary = new StringBuilder();
+                    var csvParts = alarm.LogData.Split(';');
+                    for (int i = 3; i < csvParts.Length; i++)
+                    {
+                        if(csvParts[i].Length > 3)
+                        {
+                            alarmImaginary.Append(csvParts[i]);
+                            alarmImaginary.Append('\n');
+                        }
+                    }
+                    MessageBox.Show(alarmImaginary.ToString(), "Alarm Description");
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private void ShowAlarmData(in DataGrid grid) {
+            if (grid.SelectedCells.Count == 0)
+                return;
+            var alarmId = int.Parse((grid.Columns[3].GetCellContent(grid.SelectedCells[0].Item) as TextBlock).Text);
+            var objectName = (grid.Columns[2].GetCellContent(grid.SelectedCells[0].Item) as TextBlock).Text;
+
+            if(!ShowIfFind(objectName, alarmId, false))
+                ShowIfFind(objectName, alarmId, true);
+        }
+
+        private void dGrid_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e) {
+            ShowAlarmData(dGrid);
+        }
+
+        private void dGridCeased_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e) {
+            ShowAlarmData(dGridCeased);
         }
     }
 }
