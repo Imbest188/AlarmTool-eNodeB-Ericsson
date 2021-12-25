@@ -118,10 +118,10 @@ namespace AlarmTool_eNodeB_Ericsson
         }
 
         private void TryToReadFilter() {
-            FileInfo fileInf = new FileInfo("/filter.txt");
+            FileInfo fileInf = new FileInfo("filter.txt");
             if (fileInf.Exists)
             {
-                using (StreamReader sr = new StreamReader("/filter.txt", System.Text.Encoding.Default))
+                using (StreamReader sr = new StreamReader("filter.txt", System.Text.Encoding.Default))
                 {
                     string line;
                     while ((line = sr.ReadLine()) != null)
@@ -173,10 +173,10 @@ namespace AlarmTool_eNodeB_Ericsson
                 filterData.Append(alarm + '\n');
             }
 
-            if (File.Exists("/filter.txt"))
-                File.AppendAllText("/filter.txt", filterData.ToString());
+            if (File.Exists("filter.txt"))
+                File.AppendAllText("filter.txt", filterData.ToString());
             else
-                File.WriteAllText("/filter.txt", filterData.ToString());
+                File.WriteAllText("filter.txt", filterData.ToString());
         }
 
         public void Dispose() {
@@ -277,6 +277,7 @@ namespace AlarmTool_eNodeB_Ericsson
                 nodes.RemoveEnode(node);
                 RefreshAlarms();
             }
+            RmvBox.Visibility = Visibility.Hidden;
         }
     }
 }
