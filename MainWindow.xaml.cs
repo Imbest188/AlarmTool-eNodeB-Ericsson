@@ -1,17 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 using Enodeb;
 
@@ -32,23 +26,30 @@ namespace AlarmTool_eNodeB_Ericsson
                    Name == state.Name;
         }
     }
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, IDisposable
     {
         AlarmsGetter nodes = null;
         public List<AlarmState> filterWords = new List<AlarmState>();
         private List<string> filterArray = new List<string>();
         public MainWindow() {
-            InitializeComponent();
+            Environment.CurrentDirectory = System.AppDomain.CurrentDomain.BaseDirectory;
+            InitializeComponent();           
             fGrid.Visibility = Visibility.Hidden;
+            Filter_ok_button.Visibility = Visibility.Hidden;
+            AddBox.Visibility = Visibility.Hidden;
             nodes = new AlarmsGetter();
             RefreshAlarms();
-
             filterWords.Clear();
             foreach (var aName in nodes.Select(x => x.AlarmName).Distinct())
             {
                 filterWords.Add(new AlarmState(aName, true));
             }
+            TryToReadFilter();
             fGrid.ItemsSource = filterWords;
+            fGrid.Items.Refresh();
+            dGrid.ItemsSource = from node in nodes where !filterArray.Contains(node.AlarmName) select node;
+            dGrid.Items.Refresh();
+            RunSched();
         }
 
         private void RefreshAlarms() {
@@ -77,14 +78,28 @@ namespace AlarmTool_eNodeB_Ericsson
             dGrid.Items.Refresh();
         }
 
-        private void Add_Button_Click(object sender, RoutedEventArgs e) {
+        private void RunSched() {
+            System.Timers.Timer taskTimer = new System.Timers.Timer(30000);
+            taskTimer.Elapsed += new System.Timers.ElapsedEventHandler(timer_Elapsed);
+            taskTimer.Start();
+        }
 
+        void timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e) {
+            RefreshAlarms();
+        }
+
+        private void Add_Button_Click(object sender, RoutedEventArgs e) {
+            AddBox.Visibility = AddBox.Visibility == Visibility.Visible ? Visibility.Hidden : Visibility.Visible;
         }
 
         private void Filter_Button_Click(object sender, RoutedEventArgs e) {
             //var win = new FilterWindow();
-            fGrid.Visibility = fGrid.Visibility == Visibility.Visible ? Visibility.Hidden : Visibility.Visible;
-            
+            var visible = fGrid.Visibility == Visibility.Visible ? Visibility.Hidden : Visibility.Visible;
+
+            fGrid.Visibility = visible;
+            Filter_ok_button.Visibility = visible;
+
+
             dGrid.Items.Refresh();
         }
 
@@ -99,6 +114,33 @@ namespace AlarmTool_eNodeB_Ericsson
             RefreshAlarms();
             
             dGrid.Items.Refresh();
+        }
+
+        private void TryToReadFilter() {
+            FileInfo fileInf = new FileInfo("/filter.txt");
+            if (fileInf.Exists)
+            {
+                using (StreamReader sr = new StreamReader("/filter.txt", System.Text.Encoding.Default))
+                {
+                    string line;
+                    while ((line = sr.ReadLine()) != null)
+                    {
+                        line = line.Replace("\n", "");
+                        if (line.Length > 0)
+                        {
+                            foreach (var alarm in filterWords)
+                            {
+                                if (alarm.Name == line)
+                                {
+                                    alarm.State = false;
+                                    filterArray.Add(line);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         private void fGrid_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e) {
@@ -118,6 +160,47 @@ namespace AlarmTool_eNodeB_Ericsson
             }
             fGrid.Items.Refresh();
             RefreshAlarms();
+            fGrid.Visibility = Visibility.Hidden;
+            Filter_ok_button.Visibility = Visibility.Hidden;
+            WriteFilterChanges();
+        }
+
+        private void WriteFilterChanges() {
+            StringBuilder filterData = new StringBuilder();
+            foreach (string alarm in filterArray.ToArray())
+            {
+                filterData.Append(alarm + '\n');
+            }
+
+            if (File.Exists("/filter.txt"))
+                File.AppendAllText("/filter.txt", filterData.ToString());
+            else
+                File.WriteAllText("/filter.txt", filterData.ToString());
+        }
+
+        public void Dispose() {
+            //WriteFilterChanges();
+        }
+
+        private void add_close_Click(object sender, RoutedEventArgs e) {
+            AddBox.Visibility = Visibility.Hidden;
+        }
+
+        private void add_ok_Click(object sender, RoutedEventArgs e) {
+            if(add_host.Text.Length > 0 && add_login.Text.Length > 0
+                && add_pwd.Text.Length > 0 && add_name.Text.Length > 0)
+            {
+                if (nodes.AddEnode(add_host.Text, add_login.Text, add_pwd.Text, add_name.Text) == 1)
+                {
+                    MessageBox.Show("Найдено совпадение", $"Данные для {add_host.Text} обновлены");
+                }
+                AddBox.Visibility = Visibility.Hidden;
+                RefreshAlarms();
+            }
+            else
+            {
+                MessageBox.Show("Проверка", "Не все поля заполнены");
+            }
         }
     }
 }

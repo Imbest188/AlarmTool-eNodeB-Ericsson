@@ -65,25 +65,38 @@
             </TabItem>
         </TabControl>
         <Button HorizontalAlignment="Left" Margin="190,5,0,0" VerticalAlignment="Top" Width="20" Click="Add_Button_Click" Height="20" RenderTransformOrigin="-9,-1" >
-            <Image Source="C:\Users\User\source\repos\AlarmTool eNodeB Ericsson\img\add_button.png"/>
+            <Image Source="pack://application:,,,/add_button.png"/>
         </Button>
         <Button HorizontalAlignment="Left" Margin="211,5,0,0" VerticalAlignment="Top" Width="20" Click="Filter_Button_Click" Height="20" RenderTransformOrigin="-9,-1">
-            <Image Source="C:\Users\User\source\repos\AlarmTool eNodeB Ericsson\img\filter_button.png"/>
+            <Image Source="pack://application:,,,/filter_button.png"/>
         </Button>
-        <Button HorizontalAlignment="Left" Margin="232,5,0,0" VerticalAlignment="Top" Width="20" Click="Settings_Button_Click" Height="20" RenderTransformOrigin="-9,-1">
-            <Image Source="C:\Users\User\source\repos\AlarmTool eNodeB Ericsson\img\settings_button.png"/>
-        </Button>
-        <Button HorizontalAlignment="Left" Margin="253,5,0,0" VerticalAlignment="Top" Width="20" Click="Refresh_Button_Click" Height="20" RenderTransformOrigin="-9,-1">
-            <Image Source="C:\Users\User\source\repos\AlarmTool eNodeB Ericsson\img\refresh_button.png"/>
+        <Button HorizontalAlignment="Left" Margin="232,5,0,0" VerticalAlignment="Top" Width="20" Click="Refresh_Button_Click" Height="20" RenderTransformOrigin="-9,-1">
+            <Image Source="pack://application:,,,/refresh_button.png"/>
         </Button>
 
         <DataGrid x:Name="fGrid" Margin="10,30,211.8,10" AutoGenerateColumns="False">
             <DataGrid.Columns>
                 <DataGridCheckBoxColumn Header="State" Binding="{Binding State}"/>
-                <DataGridTextColumn Header="Alarm" Binding="{Binding Name}" Width="*"/>
+                <DataGridTextColumn Header="Alarm" Binding="{Binding Name}" Width="*" IsReadOnly="True"/>
             </DataGrid.Columns>
         </DataGrid>
         <Button x:Name="Filter_ok_button" Content="OK" HorizontalAlignment="Left" Margin="232,33,0,0" VerticalAlignment="Top" Width="33" Click="Button_fOk_Click"/>
+        <GroupBox x:Name="AddBox" Height="260" Margin="232,95,258.6,65" VerticalAlignment="Center" Grid.ColumnSpan="2" Background="DarkGray" BorderBrush="Black">
+            <StackPanel>
+                <Button x:Name="add_close" Width="auto" Height="21" Content="X" Margin="257,0,10.2,0" Click="add_close_Click"/>
+                <Label Content="Host"/>
+                <TextBox x:Name="add_host"/>
+                <Label Content="Login"/>
+                <TextBox x:Name="add_login" Text="rbs"/>
+                <Label Content="Password"/>
+                <TextBox x:Name="add_pwd" Text="rbs"/>
+                <Label Content="Name"/>
+                <TextBox x:Name="add_name"/>
+                <Label Content=" "/>
+                <Button x:Name="add_ok" Width="auto" Height="22" Content="Добавить" Margin="0,0,0.2,0" VerticalAlignment="Bottom" Click="add_ok_Click"/>
+            </StackPanel>
+
+        </GroupBox>
 
     </Grid>
 

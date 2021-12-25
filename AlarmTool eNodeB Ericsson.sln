@@ -7,7 +7,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlarmTool eNodeB Ericsson",
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9A253818-54F2-4FFB-8A05-94D87F4D9C68}"
 	ProjectSection(SolutionItems) = preProject
+		img\add_button.png = img\add_button.png
+		img\filter_button.png = img\filter_button.png
 		FtpSource.cs = FtpSource.cs
+		img\icon.ico = img\icon.ico
+		img\icon.png = img\icon.png
+		img\refresh_button.png = img\refresh_button.png
+		img\settings_button.png = img\settings_button.png
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "img", "img", "{BD435173-DA8E-4AAD-98EA-33AD7FDF647E}"

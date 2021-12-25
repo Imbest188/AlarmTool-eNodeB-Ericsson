@@ -82,17 +82,34 @@ namespace Enodeb
                 File.WriteAllText(nodeFile, nodeAuthData);
         }
 
-        public void AddEnode(in string host, in string login, in string password, in string name) {
+        public int AddEnode(in string host, in string login, in string password, in string name) {
+            for (int i = 0; i < enodes.Count; i++)
+            {
+                if(enodes[i].Host == host)
+                {
+                    enodes[i] = new NodeFtp(host, login, password);
+                    SaveNodeToFile(host, login, password, name);
+                    return 1;
+                }
+            }
             enodes.Add(new NodeFtp(host, login, password));
             SaveNodeToFile(host, login, password, name);
+            return 0;
         }
 
         public bool RemoveEnode(in string host = null, in string name = null) {
             if (host != null)
             {
-                //enodes.Remove(enodes.Where(node => node.));
+                for (int i = 0; i < enodes.Count; i++)
+                {
+                    if (enodes[i].Host == host || enodes[i].Name == name)
+                    {
+                        enodes.Remove(enodes[i]);
+                        return true;
+                    }
+                }
             }
-            return true;
+            return false;
         }
 
         public IEnumerator<Alarm> GetEnumerator() {
@@ -167,16 +184,18 @@ namespace Enodeb
         private readonly FluentFTP.FtpClient client;
         private const string logFilePath = "/c/logfiles/alarm_event/ALARM_LOG.xml";
         private List<Alarm> alarmList = null;
-        private string name;
+        public string Name { get; set; }
+        public string Host { get; set; }
 
         public NodeFtp(in string host, in string login, in string password, in string eNodeB = null) {
+            Host = host;
             client = new FluentFTP.FtpClient
             {
                 Host = host,
                 Credentials = new System.Net.NetworkCredential(login, password)
             };
 
-            name = eNodeB ?? host;
+            Name = eNodeB ?? host;
         }
 
         private void ParseAlarms(ref List<Alarm> alarmList, in byte[] logFileData) {
@@ -246,7 +265,7 @@ namespace Enodeb
                 if (reader.Name == "RecordContent")
                 {
                     string alarmText = reader.ReadElementContentAsString().Trim();
-                    alarmList.Add(new Alarm(in dt, in alarmText, in name));
+                    alarmList.Add(new Alarm(in dt, in alarmText, Name));
                 }
             }
         }
@@ -260,21 +279,21 @@ namespace Enodeb
             {
                 alarmList = new List<Alarm>() { new Alarm(
                     DateTime.Now, Alarm.AlarmClass.critical, "Host Unavaliable",
-                    "Could not connect to the remote host", name) };
+                    "Could not connect to the remote host", Name) };
                 return false;
             }
             if (client.IsConnected == false)
             {
                 alarmList = new List<Alarm>() { new Alarm(
                     DateTime.Now, Alarm.AlarmClass.critical, "Host Unavaliable",
-                    "Could not connect to the remote host", name) };
+                    "Could not connect to the remote host", Name) };
                 return false;
             }
             if (client.IsAuthenticated == false)
             {
                 alarmList = new List<Alarm>() { new Alarm(
                     DateTime.Now, Alarm.AlarmClass.critical, "Auth exception",
-                    "Combination of login/password is wrong", name) };
+                    "Combination of login/password is wrong", Name) };
                 return false;
             }
 
